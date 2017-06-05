@@ -13,33 +13,24 @@ class DateItem {
   template: `
 <div class="layout-col horizontal-center" style="background-color:white;height:100%">
   <div class="layout-col horizontal-center top-banner">
-    <div class="dayofweek padding-5">{{currentMoment.format('dddd')}}</div>
-    <div class="text-center padding-10">
-      <div class="padding-5">
-        <ion-icon class="arrow" name="arrow-back" (click)="setMonthBack()"></ion-icon>
-        <span class="month padding-10">{{currentMoment.format('MMM')}}</span>
-        <ion-icon class="arrow" name="arrow-forward" (click)="setMonthForward()"></ion-icon>
-      </div>
-      <div class="day padding-5">{{currentMoment.format('D')}}</div>
-      <div class="text-center padding-5">
-        <ion-icon class="arrow" name="arrow-back" (click)="setYearBack()"></ion-icon>
-        <span class="year padding-10">{{currentMoment.format('YYYY')}}</span>
-        <ion-icon class="arrow" name="arrow-forward" (click)="setYearForward()"></ion-icon>
-      </div>
+    <div class="padding-5 space-between">
+        <ion-icon class="arrow padding-10" name="arrow-back" (click)="setMonthBack()"></ion-icon>
+        <span class="month padding-10">{{currentMoment.format('MMMM')}} {{currentMoment.format('YYYY')}}</span>
+        <ion-icon class="arrow padding-10" name="arrow-forward" (click)="setMonthForward()"></ion-icon>
     </div>
   </div>
-
+<!--
   <span class="month-year">{{currentMoment.format('MMMM YYYY')}}</span>
-
+-->
   <div class="calendar-item-container">
     <div class="layout-row day-item-header" style="width:100%;flex-wrap:wrap;text-align:center">
-      <div>S</div>
-      <div>M</div>
-      <div>T</div>
-      <div>W</div>
-      <div>T</div>
-      <div>F</div>
-      <div>S</div>
+      <div>Su</div>
+      <div>Mo</div>
+      <div>Tu</div>
+      <div>We</div>
+      <div>Th</div>
+      <div>Fr</div>
+      <div>Sa</div>
     </div>
     <div class="layout-row" style="width:100%;flex-wrap:wrap;text-align:center" *ngFor="let week of daysGroupedByWeek;">
       <div class="day-item"
@@ -127,39 +118,31 @@ export class DatePicker {
   }
 
   private selectDate(day: DateItem) {
-
     if (!day.isEnabled) return;
-
     if (this.selectedDateItem && this.selectedDateItem.isSelected) {
       this.selectedDateItem.isSelected = false;
     }
-
     day.isSelected = true;
     this.selectedDateItem = day;
-
   }
 
   private setTodayAsDefaultSelectedDate() {
     let today = Moment().startOf("day");
     let foundDates = this.daysOfMonth
       .filter((item: DateItem) => today.isSame(item.momentDate.clone().startOf("day")));
-
     if (foundDates && foundDates.length > 0) {
       this.selectedDateItem = foundDates[0];
       this.selectedDateItem.isSelected = true;
     }
-
   }
 
   private isBelongToThisMonth(momentDate: Moment.Moment, month: number) {
-
     return momentDate.month() + 1 === month;
   }
 
   private setMonthBack() {
     this.currentMoment.subtract(1, "month");
     this.renderCalender();
-
   }
 
   private setMonthForward() {
@@ -171,6 +154,7 @@ export class DatePicker {
     this.currentMoment.subtract(1, "year");
     this.renderCalender();
   }
+
   private setYearForward() {
     this.currentMoment.add(1, "year");
     this.renderCalender();
@@ -194,9 +178,7 @@ export class DatePicker {
         this.onCancelled.emit();
       }
     });
-
     this.calendarModal.present();
   }
-
-
+  
 }

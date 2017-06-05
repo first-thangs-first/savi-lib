@@ -73,15 +73,22 @@
 }
 
 .top-banner {
-    background-color: #1e90ff;
+    background-color: #CC1F2C;
     color: white;
     width: 100%;
     padding: 10px;
-    min-height: 200px;
+    // min-height: 100px;
 }
 
 .calendar-item-container {
     width: 100%;
     padding: 5px;
     min-height: 262px;
+}
+
+.space-between {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 }
