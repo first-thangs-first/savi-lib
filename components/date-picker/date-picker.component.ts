@@ -15,7 +15,7 @@ class DateItem {
   <div class="layout-col horizontal-center top-banner">
     <div class="padding-5 space-between">
         <ion-icon class="arrow padding-10" name="arrow-back" (click)="setMonthBack()"></ion-icon>
-        <span class="month padding-10">{{currentMoment.format('MMMM')}} {{currentMoment.format('YYYY')}}</span>
+        <span class="month padding-10">{{currentMoment.format('MMM')}} {{currentMoment.format('YYYY')}}</span>
         <ion-icon class="arrow padding-10" name="arrow-forward" (click)="setMonthForward()"></ion-icon>
     </div>
   </div>
@@ -24,13 +24,13 @@ class DateItem {
 -->
   <div class="calendar-item-container">
     <div class="layout-row day-item-header" style="width:100%;flex-wrap:wrap;text-align:center">
-      <div>Su</div>
-      <div>Mo</div>
-      <div>Tu</div>
-      <div>We</div>
-      <div>Th</div>
-      <div>Fr</div>
-      <div>Sa</div>
+      <div>S</div>
+      <div>M</div>
+      <div>T</div>
+      <div>W</div>
+      <div>T</div>
+      <div>F</div>
+      <div>S</div>
     </div>
     <div class="layout-row" style="width:100%;flex-wrap:wrap;text-align:center" *ngFor="let week of daysGroupedByWeek;">
       <div class="day-item"
@@ -48,7 +48,7 @@ class DateItem {
   `
 })
 export class DatePicker {
-    @Output()
+  @Output()
   public onDateSelected: EventEmitter<Date> = new EventEmitter<Date>();
 
   @Output()
@@ -68,53 +68,36 @@ export class DatePicker {
   private renderCalender() {
     this.daysOfMonth = this.generateDaysOfMonth(this.currentMoment.year(), this.currentMoment.month() + 1, this.currentMoment.date());
     this.daysGroupedByWeek = this.groupByWeek(this.daysOfMonth);
-
     this.setTodayAsDefaultSelectedDate();
   }
 
   private generateDaysOfMonth(year: number, month: number, day: number) {
     let calendarMonth = Moment(`${year}-${month}-${day}`, "YYYY-MM-DD");
-
     let startOfMonth = calendarMonth.clone().startOf("month").day("sunday");
     let endOfMonth = calendarMonth.clone().endOf("month").day("saturday");
-
     let totalDays = endOfMonth.diff(startOfMonth, "days") + 1;
-
     let calendarDays: DateItem[] = [];
 
     for (let i = 0; i < totalDays; i++) {
       let immunableStartOfMonth = startOfMonth.clone();
-
       let dateItem: DateItem = {
         isSelected: false,
         momentDate: immunableStartOfMonth.add(i, "day"),
         isEnabled: this.isBelongToThisMonth(immunableStartOfMonth, month)
       };
-
       calendarDays.push(dateItem);
     }
-
     return calendarDays;
   }
 
   private groupByWeek(daysOfMonth: DateItem[]) {
-
     let groupedDaysOfMonth = new Array<DateItem[]>();
-
     daysOfMonth.forEach((item, index) => {
-
-
       let groupIndex = Math.floor((index / 7));
-
       groupedDaysOfMonth[groupIndex] = groupedDaysOfMonth[groupIndex] || [];
-
       groupedDaysOfMonth[groupIndex].push(item);
-
-
     });
-
     return groupedDaysOfMonth;
-
   }
 
   private selectDate(day: DateItem) {
@@ -161,6 +144,7 @@ export class DatePicker {
   }
 
   private confirmDateSelection() {
+    console.log(this.selectedDateItem.momentDate.toDate());
     this.viewCtrl.dismiss(this.selectedDateItem.momentDate.toDate());
   }
 
@@ -180,5 +164,5 @@ export class DatePicker {
     });
     this.calendarModal.present();
   }
-  
+
 }
