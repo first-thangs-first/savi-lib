@@ -8,7 +8,7 @@ import Moment from "moment";
   selector: 'date-picker',
   template: `
 <div id="date-picker-input-container" (click)="showDatePicker($event)">
-  <span class="date-picker-date-display">{{ selectedDate }}</span>
+  <span class="date-picker-date-display">{{ selectedDateStr }}</span>
   <ion-icon name="calendar" isActive="false"></ion-icon>
 </div>
   `
@@ -16,11 +16,14 @@ import Moment from "moment";
 export class DatePicker {
   @Input()
   selectedDate;
+  selectedDateStr;
   calendar;
   constructor (private popoverCtrl: PopoverController,
                public navParams: NavParams,
                public viewCtrl: ViewController) {
     this.calendar = DatePickerCalendar;
+    this.selectedDateStr = Moment(this.selectedDate).format("MM-DD");
+    console.log("constructor called");
   }
 
   showDatePicker(clickEvent){
@@ -28,10 +31,8 @@ export class DatePicker {
     let popover = this.popoverCtrl.create(this.calendar, {'selectedDate': this.selectedDate});
     popover.present();
     popover.onDidDismiss( (data) => {
-      console.log("pop over data calendar dismiss", data);
       let date = Moment(data);
-      console.log(date.format("YYYY-MM-DD"));
-      this.selectedDate = date.format("YYYY-MM-DD");
+      this.selectedDateStr = date.format("MM-DD");
     })
   }
 }

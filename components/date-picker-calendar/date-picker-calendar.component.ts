@@ -14,7 +14,7 @@ class DateItem {
 <div class="layout-col horizontal-center" style="background-color:white;height:100%">
   <div class="layout-col horizontal-center top-banner">
     <div class="padding-5 space-between">
-        <ion-icon class="arrow padding-10" name="arrow-back" (click)="setMonthBack()"></ion-icon>
+        <ion-icon class="arrow padding-10" name="arrow-back" (click)="setMonthBack()" ></ion-icon>
         <span class="month padding-10">{{currentMoment.format('MMM')}} {{currentMoment.format('YYYY')}}</span>
         <ion-icon class="arrow padding-10" name="arrow-forward" (click)="setMonthForward()"></ion-icon>
     </div>
@@ -31,7 +31,7 @@ class DateItem {
     </div>
     <div class="layout-row" style="width:100%;flex-wrap:wrap;text-align:center" *ngFor="let week of daysGroupedByWeek;">
       <div class="day-item"
-          [ngClass]="{'selected': day.isSelected, 'disabled': !day.isEnabled}"
+          [ngClass]="{'selected': day.isSelected, 'disabled': day.momentDate.isBefore('2017-06-07') || !day.isEnabled}"
           *ngFor="let day of week;"
           (click)="selectDate(day)">{{day.momentDate.date()}}</div>
     </div>
@@ -57,6 +57,8 @@ export class DatePickerCalendar {
   private daysOfMonth: DateItem[];
   private calendarModal: Modal;
   public selectedDateStr; // stores the date passed in by nav params
+  public today: Moment.Moment = Moment(Moment().format("YYYY-MM-DD"));
+  public onCurrentMonth: Boolean = false;
 
   constructor(public modalCtrl: ModalController, public viewCtrl: ViewController, public navParams: NavParams) {
     this.currentMoment = Moment();
@@ -109,6 +111,7 @@ export class DatePickerCalendar {
 
   private selectDate(day: DateItem) {
     if (!day.isEnabled) return;
+    if (day.momentDate.isBefore(this.today)) return;
     if (this.selectedDateItem && this.selectedDateItem.isSelected) {
       this.selectedDateItem.isSelected = false;
     }
@@ -142,6 +145,8 @@ export class DatePickerCalendar {
   }
 
   private setMonthBack() {
+    // set currentMoment back bv one month but not pass current month
+    if (this.currentMoment.isSame(this.today, "month")) return;
     this.currentMoment.subtract(1, "month");
     this.renderCalender();
   }
