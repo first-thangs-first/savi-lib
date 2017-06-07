@@ -60,9 +60,15 @@ export class DatePickerCalendar {
   private daysOfMonth: DateItem[];
   private calendarModal: Modal;
 
-  constructor(public modalCtrl: ModalController, public viewCtrl: ViewController) {
+  constructor(public modalCtrl: ModalController, public viewCtrl: ViewController, public navParams: NavParams) {
     this.currentMoment = Moment();
     this.renderCalender();
+  }
+
+  ngOnInit() {
+    console.log("on init called for calendar");
+    let data = this.navParams.get("selectedDate");
+    console.log("on init data passed", data);
   }
 
   private renderCalender() {
@@ -152,17 +158,17 @@ export class DatePickerCalendar {
     this.viewCtrl.dismiss();
   }
 
-  public showCalendar() {
-    this.calendarModal = this.modalCtrl.create(DatePickerCalendar);
-    this.calendarModal.onDidDismiss( ( data: any ) => {
-      if (data) {
-        this.onDateSelected.emit(data);
-      }
-      else {
-        this.onCancelled.emit();
-      }
-    });
-    this.calendarModal.present();
-  }
+  // public showCalendar() {
+  //   this.calendarModal = this.modalCtrl.create(DatePickerCalendar);
+  //   this.calendarModal.onDidDismiss( ( data: any ) => {
+  //     if (data) {
+  //       this.onDateSelected.emit(data);
+  //     }
+  //     else {
+  //       this.onCancelled.emit();
+  //     }
+  //   });
+  //   this.calendarModal.present();
+  // }
 
 }
