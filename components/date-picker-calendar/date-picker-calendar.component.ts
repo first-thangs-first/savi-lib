@@ -19,9 +19,6 @@ class DateItem {
         <ion-icon class="arrow padding-10" name="arrow-forward" (click)="setMonthForward()"></ion-icon>
     </div>
   </div>
-<!--
-  <span class="month-year">{{currentMoment.format('MMMM YYYY')}}</span>
--->
   <div class="calendar-item-container">
     <div class="layout-row day-item-header" style="width:100%;flex-wrap:wrap;text-align:center">
       <div>S</div>
