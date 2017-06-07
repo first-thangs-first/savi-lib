@@ -59,6 +59,7 @@ export class DatePickerCalendar {
   private selectedDateItem: DateItem;
   private daysOfMonth: DateItem[];
   private calendarModal: Modal;
+  public selectedDateStr; // stores the date passed in by nav params
 
   constructor(public modalCtrl: ModalController, public viewCtrl: ViewController, public navParams: NavParams) {
     this.currentMoment = Moment();
@@ -69,12 +70,15 @@ export class DatePickerCalendar {
     console.log("on init called for calendar");
     let data = this.navParams.get("selectedDate");
     console.log("on init data passed", data);
+    this.selectedDateStr = data;
+    this.setSelectedDate();
   }
 
   private renderCalender() {
     this.daysOfMonth = this.generateDaysOfMonth(this.currentMoment.year(), this.currentMoment.month() + 1, this.currentMoment.date());
     this.daysGroupedByWeek = this.groupByWeek(this.daysOfMonth);
-    this.setTodayAsDefaultSelectedDate();
+    // this.setTodayAsDefaultSelectedDate();
+    this.setSelectedDate();
   }
 
   private generateDaysOfMonth(year: number, month: number, day: number) {
@@ -115,10 +119,21 @@ export class DatePickerCalendar {
     this.selectedDateItem = day;
   }
 
-  private setTodayAsDefaultSelectedDate() {
-    let today = Moment().startOf("day");
+  // private setTodayAsDefaultSelectedDate() {
+  //   let today = Moment().startOf("day");
+  //   let foundDates = this.daysOfMonth
+  //     .filter((item: DateItem) => today.isSame(item.momentDate.clone().startOf("day")));
+  //   if (foundDates && foundDates.length > 0) {
+  //     this.selectedDateItem = foundDates[0];
+  //     this.selectedDateItem.isSelected = true;
+  //   }
+  // }
+
+  private setSelectedDate() {
+    // set selected date to the date passed in by parent component
+    let inputDate = Moment(this.selectedDateStr);
     let foundDates = this.daysOfMonth
-      .filter((item: DateItem) => today.isSame(item.momentDate.clone().startOf("day")));
+      .filter((item: DateItem) => inputDate.isSame(item.momentDate.clone().startOf("day")));
     if (foundDates && foundDates.length > 0) {
       this.selectedDateItem = foundDates[0];
       this.selectedDateItem.isSelected = true;
