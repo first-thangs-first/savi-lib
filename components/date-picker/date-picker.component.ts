@@ -8,8 +8,9 @@ import Moment from "moment";
   selector: 'date-picker',
   template: `
 <div id="date-picker-input-container" (click)="showDatePicker($event)">
-  <span class="date-picker-date-display">{{ selectedDateStr }}</span>
-  <ion-icon name="calendar" isActive="false"></ion-icon>
+  <span class="date-picker-date-display" item-start>{{ selectedDateStr }}</span>
+  <span class="date-picker-filler"></span>
+  <ion-icon name="md-arrow-dropdown" isActive="false" item-end></ion-icon>
 </div>
   `
 })
