@@ -14,8 +14,8 @@ class DateItem {
 <div class="layout-col horizontal-center" style="background-color:white;height:100%">
   <div class="layout-col horizontal-center top-banner">
     <div class="padding-5 space-between">
-        <ion-icon class="arrow padding-10" name="arrow-back" (click)="setMonthBack()" [ngClass]="{'calendar-camouflage': currentMoment.isSame(today, 'month')}"></ion-icon>
-        <span class="month padding-10">{{currentMoment.format('MMM')}} {{currentMoment.format('YYYY')}}</span>
+        <ion-icon class="arrow padding-10" name="arrow-back" (click)="setMonthBack()" [ngClass]="{'calendar-camouflage': selectedMoment.isSame(today, 'month')}"></ion-icon>
+        <span class="month padding-10">{{selectedMoment.format('MMM')}} {{selectedMoment.format('YYYY')}}</span>
         <ion-icon class="arrow padding-10" name="arrow-forward" (click)="setMonthForward()"></ion-icon>
     </div>
   </div>
@@ -51,7 +51,7 @@ export class DatePickerCalendar {
   @Output()
   public onCancelled: EventEmitter<any> = new EventEmitter<any>();
 
-  private currentMoment: Moment.Moment;
+  private selectedMoment: Moment.Moment;
   private daysGroupedByWeek = [];
   private selectedDateItem: DateItem;
   private daysOfMonth: DateItem[];
@@ -62,19 +62,20 @@ export class DatePickerCalendar {
   public onCurrentMonth: Boolean = false;
 
   constructor(public modalCtrl: ModalController, public viewCtrl: ViewController, public navParams: NavParams) {
-    this.currentMoment = Moment();
+    console.log("constructor of calendar, selectedMoment", this.selectedMoment, this.selectedDateStr);
+    this.selectedDateStr = this.navParams.get("selectedDate");
+    this.selectedMoment = Moment(this.selectedDateStr);
+    this.minDate = this.navParams.get("minDate");
     this.renderCalender();
   }
 
   ngOnInit() {
     console.log("on init called for calendar", this.navParams.get("selectedDate"), this.navParams.get("minDate"));
-    this.selectedDateStr = this.navParams.get("selectedDate");
     this.setSelectedDate();
-    this.minDate = this.navParams.get("minDate");
   }
 
   private renderCalender() {
-    this.daysOfMonth = this.generateDaysOfMonth(this.currentMoment.year(), this.currentMoment.month() + 1, this.currentMoment.date());
+    this.daysOfMonth = this.generateDaysOfMonth(this.selectedMoment.year(), this.selectedMoment.month() + 1, this.selectedMoment.date());
     this.daysGroupedByWeek = this.groupByWeek(this.daysOfMonth);
     // this.setTodayAsDefaultSelectedDate();
     this.setSelectedDate();
@@ -145,24 +146,24 @@ export class DatePickerCalendar {
   }
 
   private setMonthBack() {
-    // set currentMoment back bv one month but not pass current month
-    if (this.currentMoment.isSame(this.today, "month")) return;
-    this.currentMoment.subtract(1, "month");
+    // set selectedMoment back bv one month but not pass current month
+    if (this.selectedMoment.isSame(this.today, "month")) return;
+    this.selectedMoment.subtract(1, "month");
     this.renderCalender();
   }
 
   private setMonthForward() {
-    this.currentMoment.add(1, "month");
+    this.selectedMoment.add(1, "month");
     this.renderCalender();
   }
 
   private setYearBack() {
-    this.currentMoment.subtract(1, "year");
+    this.selectedMoment.subtract(1, "year");
     this.renderCalender();
   }
 
   private setYearForward() {
-    this.currentMoment.add(1, "year");
+    this.selectedMoment.add(1, "year");
     this.renderCalender();
   }
 

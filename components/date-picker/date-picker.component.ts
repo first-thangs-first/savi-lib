@@ -26,8 +26,13 @@ export class DatePicker {
                public navParams: NavParams,
                public viewCtrl: ViewController) {
     this.calendar = DatePickerCalendar;
-    this.selectedDateStr = Moment(this.selectedDate).format("YYYY-MM-DD");
-    console.log("constructor called");
+    this.selectedDateStr = Moment(this.selectedDate).format("YYYY-MM-DD"); 
+    console.log("datepicker constructor called with selectedDate", this.selectedDateStr);
+  }
+
+  ngOnInit() {
+    this.selectedDateStr = Moment(this.selectedDate).format("YYYY-MM-DD"); 
+    console.log("datepicker ngOnInit called with selectedDate", this.selectedDateStr);
   }
 
   showDatePicker(clickEvent){
