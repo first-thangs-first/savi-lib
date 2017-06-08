@@ -35,10 +35,12 @@ export class DatePicker {
     let popover = this.popoverCtrl.create(this.calendar, {'selectedDate': this.selectedDate, 'minDate': this.minDate});
     popover.present();
     popover.onDidDismiss( (data) => {
-      let date = Moment(data);
-      this.selectedDateStr = date.format("YYYY-MM-DD");
-      this.selectedDate = date.format("YYYY-MM-DD");
-      this.onDateSelected.emit(date.format("YYY-MM-DD"));
+      if (data) {
+        let date = Moment(data);
+        this.selectedDateStr = date.format("YYYY-MM-DD");
+        this.selectedDate = date.format("YYYY-MM-DD");
+        this.onDateSelected.emit(date.format("YYYY-MM-DD"));
+      }
     })
   }
 }

@@ -31,7 +31,7 @@ class DateItem {
     </div>
     <div class="layout-row" style="width:100%;flex-wrap:wrap;text-align:center" *ngFor="let week of daysGroupedByWeek;">
       <div class="day-item"
-          [ngClass]="{'selected': day.isSelected, 'disabled': day.momentDate.isBefore('2017-06-07') || !day.isEnabled}"
+          [ngClass]="{'selected': day.isSelected, 'disabled': day.momentDate.isBefore(today) || !day.isEnabled}"
           *ngFor="let day of week;"
           (click)="selectDate(day)">{{day.momentDate.date()}}</div>
     </div>
