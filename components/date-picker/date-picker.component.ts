@@ -16,23 +16,29 @@ import Moment from "moment";
 export class DatePicker {
   @Input()
   selectedDate;
+  @Input()
+  minDate
+  @Output()
+  onDateSelected = new EventEmitter();
   selectedDateStr;
   calendar;
   constructor (private popoverCtrl: PopoverController,
                public navParams: NavParams,
                public viewCtrl: ViewController) {
     this.calendar = DatePickerCalendar;
-    this.selectedDateStr = Moment(this.selectedDate).format("MM-DD");
+    this.selectedDateStr = Moment(this.selectedDate).format("YYYY-MM-DD");
     console.log("constructor called");
   }
 
   showDatePicker(clickEvent){
     console.log("show datepicker", this.selectedDate);
-    let popover = this.popoverCtrl.create(this.calendar, {'selectedDate': this.selectedDate});
+    let popover = this.popoverCtrl.create(this.calendar, {'selectedDate': this.selectedDate, 'minDate': this.minDate});
     popover.present();
     popover.onDidDismiss( (data) => {
       let date = Moment(data);
-      this.selectedDateStr = date.format("MM-DD");
+      this.selectedDateStr = date.format("YYYY-MM-DD");
+      this.selectedDate = date.format("YYYY-MM-DD");
+      this.onDateSelected.emit(date.format("YYY-MM-DD"));
     })
   }
 }

@@ -14,7 +14,7 @@ class DateItem {
 <div class="layout-col horizontal-center" style="background-color:white;height:100%">
   <div class="layout-col horizontal-center top-banner">
     <div class="padding-5 space-between">
-        <ion-icon class="arrow padding-10" name="arrow-back" (click)="setMonthBack()" ></ion-icon>
+        <ion-icon class="arrow padding-10" name="arrow-back" (click)="setMonthBack()" [ngClass]="{'calendar-camouflage': currentMoment.isSame(today, 'month')}"></ion-icon>
         <span class="month padding-10">{{currentMoment.format('MMM')}} {{currentMoment.format('YYYY')}}</span>
         <ion-icon class="arrow padding-10" name="arrow-forward" (click)="setMonthForward()"></ion-icon>
     </div>
@@ -57,6 +57,7 @@ export class DatePickerCalendar {
   private daysOfMonth: DateItem[];
   private calendarModal: Modal;
   public selectedDateStr; // stores the date passed in by nav params
+  public minDate;
   public today: Moment.Moment = Moment(Moment().format("YYYY-MM-DD"));
   public onCurrentMonth: Boolean = false;
 
@@ -66,11 +67,10 @@ export class DatePickerCalendar {
   }
 
   ngOnInit() {
-    console.log("on init called for calendar");
-    let data = this.navParams.get("selectedDate");
-    console.log("on init data passed", data);
-    this.selectedDateStr = data;
+    console.log("on init called for calendar", this.navParams.get("selectedDate"), this.navParams.get("minDate"));
+    this.selectedDateStr = this.navParams.get("selectedDate");
     this.setSelectedDate();
+    this.minDate = this.navParams.get("minDate");
   }
 
   private renderCalender() {
