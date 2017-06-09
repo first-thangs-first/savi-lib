@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { ViewController, ModalController, NavParams } from 'ionic-angular';
 import Moment from "moment";
 
-class DateItem {
+export class DateItem {
     isSelected: boolean;
     momentDate: Moment.Moment;
     isEnabled: boolean;
@@ -76,7 +76,7 @@ export class DatePickerCalendar {
     return groupedDaysOfMonth;
   }
 
-  private selectDate(day: DateItem) {
+ selectDate(day: DateItem) {
     if (!day.isEnabled) return;
     if (day.momentDate.isBefore(this.today)) return;
     if (this.selectedDateItem && this.selectedDateItem.isSelected) {
@@ -101,24 +101,24 @@ export class DatePickerCalendar {
     return momentDate.month() + 1 === month;
   }
 
-  private setMonthBack() {
+  setMonthBack() {
     // set selectedMoment back bv one month but not pass current month
     if (this.selectedMoment.isSame(this.today, "month")) return;
     this.selectedMoment.subtract(1, "month");
     this.renderCalender();
   }
 
-  private setMonthForward() {
+  setMonthForward() {
     this.selectedMoment.add(1, "month");
     this.renderCalender();
   }
 
-  private confirmDateSelection() {
+  confirmDateSelection() {
     console.log(this.selectedDateItem.momentDate.toDate());
     this.viewCtrl.dismiss(this.selectedDateItem.momentDate.toDate());
   }
 
-  private cancel() {
+  cancel() {
     this.viewCtrl.dismiss();
   }
 
