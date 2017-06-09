@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { ViewController, Modal, ModalController, NavParams } from 'ionic-angular';
+import { ViewController, ModalController, NavParams } from 'ionic-angular';
 import Moment from "moment";
 
 class DateItem {
@@ -55,7 +55,6 @@ export class DatePickerCalendar {
   private daysGroupedByWeek = [];
   private selectedDateItem: DateItem;
   private daysOfMonth: DateItem[];
-  private calendarModal: Modal;
   public selectedDateStr; // stores the date passed in by nav params
   public minDate;
   public today: Moment.Moment = Moment(Moment().format("YYYY-MM-DD"));
@@ -77,7 +76,6 @@ export class DatePickerCalendar {
   private renderCalender() {
     this.daysOfMonth = this.generateDaysOfMonth(this.selectedMoment.year(), this.selectedMoment.month() + 1, this.selectedMoment.date());
     this.daysGroupedByWeek = this.groupByWeek(this.daysOfMonth);
-    // this.setTodayAsDefaultSelectedDate();
     this.setSelectedDate();
   }
 
@@ -120,16 +118,6 @@ export class DatePickerCalendar {
     this.selectedDateItem = day;
   }
 
-  // private setTodayAsDefaultSelectedDate() {
-  //   let today = Moment().startOf("day");
-  //   let foundDates = this.daysOfMonth
-  //     .filter((item: DateItem) => today.isSame(item.momentDate.clone().startOf("day")));
-  //   if (foundDates && foundDates.length > 0) {
-  //     this.selectedDateItem = foundDates[0];
-  //     this.selectedDateItem.isSelected = true;
-  //   }
-  // }
-
   private setSelectedDate() {
     // set selected date to the date passed in by parent component
     let inputDate = Moment(this.selectedDateStr);
@@ -157,16 +145,6 @@ export class DatePickerCalendar {
     this.renderCalender();
   }
 
-  private setYearBack() {
-    this.selectedMoment.subtract(1, "year");
-    this.renderCalender();
-  }
-
-  private setYearForward() {
-    this.selectedMoment.add(1, "year");
-    this.renderCalender();
-  }
-
   private confirmDateSelection() {
     console.log(this.selectedDateItem.momentDate.toDate());
     this.viewCtrl.dismiss(this.selectedDateItem.momentDate.toDate());
@@ -175,18 +153,5 @@ export class DatePickerCalendar {
   private cancel() {
     this.viewCtrl.dismiss();
   }
-
-  // public showCalendar() {
-  //   this.calendarModal = this.modalCtrl.create(DatePickerCalendar);
-  //   this.calendarModal.onDidDismiss( ( data: any ) => {
-  //     if (data) {
-  //       this.onDateSelected.emit(data);
-  //     }
-  //     else {
-  //       this.onCancelled.emit();
-  //     }
-  //   });
-  //   this.calendarModal.present();
-  // }
 
 }
