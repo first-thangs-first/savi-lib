@@ -28,16 +28,13 @@ export class DatePicker {
                public viewCtrl: ViewController) {
     this.calendar = DatePickerCalendar;
     this.selectedDateStr = Moment(this.selectedDate).format("YYYY-MM-DD"); 
-    console.log("datepicker constructor called with selectedDate", this.selectedDateStr);
   }
 
   ngOnInit() {
     this.selectedDateStr = Moment(this.selectedDate).format("YYYY-MM-DD"); 
-    console.log("datepicker ngOnInit called with selectedDate", this.selectedDateStr);
   }
 
   showDatePicker(clickEvent){
-    console.log("show datepicker", this.selectedDate);
     let popover = this.popoverCtrl.create(this.calendar, {'selectedDate': this.selectedDate, 'minDate': this.minDate});
     popover.present();
     popover.onDidDismiss( (data) => {

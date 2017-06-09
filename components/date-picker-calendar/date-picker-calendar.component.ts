@@ -29,7 +29,6 @@ export class DatePickerCalendar {
   public onCurrentMonth: Boolean = false;
 
   constructor(public modalCtrl: ModalController, public viewCtrl: ViewController, public navParams: NavParams) {
-    console.log("constructor of calendar, selectedMoment", this.selectedMoment, this.selectedDateStr);
     this.selectedDateStr = this.navParams.get("selectedDate");
     this.selectedMoment = Moment(this.selectedDateStr);
     this.minDate = this.navParams.get("minDate");
@@ -37,7 +36,6 @@ export class DatePickerCalendar {
   }
 
   ngOnInit() {
-    console.log("on init called for calendar", this.navParams.get("selectedDate"), this.navParams.get("minDate"));
     this.setSelectedDate();
   }
 
@@ -114,7 +112,6 @@ export class DatePickerCalendar {
   }
 
   confirmDateSelection() {
-    console.log(this.selectedDateItem.momentDate.toDate());
     this.viewCtrl.dismiss(this.selectedDateItem.momentDate.toDate());
   }
 
